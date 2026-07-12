@@ -29,6 +29,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -57,8 +58,12 @@ import com.grupo3.smi_mobile_client_android.ui.theme.SmiTextSecondary
 import com.grupo3.smi_mobile_client_android.ui.theme.SmimobileclientandroidTheme
 
 @Composable
-fun LoginScreen(viewModel: LoginViewModel) {
+fun LoginScreen(viewModel: LoginViewModel, onLoginSuccess: () -> Unit) {
     val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.navigateToHome.collect { onLoginSuccess() }
+    }
 
     AppScaffold { innerPadding ->
         LoginContent(
