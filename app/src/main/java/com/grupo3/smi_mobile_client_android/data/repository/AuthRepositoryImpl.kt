@@ -11,7 +11,7 @@ class AuthRepositoryImpl(
 ) : AuthRepository {
 
     override suspend fun login(dni: String, credencial: String): Colaborador {
-        val dto = remoteDataSource.login(LoginRequest(dni, credencial))
+        val dto = remoteDataSource.login(LoginRequest(dni = dni, password = credencial))
         return ColaboradorMapper.toDomain(dto)
     }
 }

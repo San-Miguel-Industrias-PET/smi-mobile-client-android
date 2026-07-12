@@ -15,6 +15,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // La URL puede variar por entorno; se resuelve en build-time, no queda hardcodeada en Kotlin.
+        buildConfigField("String", "BASE_URL", "\"${project.property("API_BASE_URL")}\"")
     }
 
     buildTypes {
@@ -30,6 +33,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 

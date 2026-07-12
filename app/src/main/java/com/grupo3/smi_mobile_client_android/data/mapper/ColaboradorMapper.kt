@@ -1,12 +1,17 @@
 package com.grupo3.smi_mobile_client_android.data.mapper
 
-import com.grupo3.smi_mobile_client_android.data.remote.dto.ColaboradorDto
+import com.grupo3.smi_mobile_client_android.data.remote.dto.UserDto
 import com.grupo3.smi_mobile_client_android.domain.model.Colaborador
 
 object ColaboradorMapper {
-    fun toDomain(dto: ColaboradorDto): Colaborador = Colaborador(
+    fun toDomain(dto: UserDto): Colaborador = Colaborador(
+        id = dto.id,
         dni = dto.dni,
-        nombreCompleto = dto.nombreCompleto,
-        token = dto.token
+        nombres = dto.nombres,
+        apellidoPaterno = dto.apellidoPaterno,
+        apellidoMaterno = dto.apellidoMaterno,
+        edad = dto.edad,
+        puesto = dto.puesto,
+        area = dto.area
     )
 }

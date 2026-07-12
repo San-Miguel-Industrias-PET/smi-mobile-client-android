@@ -1,33 +1,34 @@
 package com.grupo3.smi_mobile_client_android.data.remote.datasource
 
+import com.google.gson.Gson
 import com.grupo3.smi_mobile_client_android.core.network.ApiService
-import com.grupo3.smi_mobile_client_android.data.remote.dto.ColaboradorDto
+import com.grupo3.smi_mobile_client_android.data.remote.dto.ApiErrorBody
 import com.grupo3.smi_mobile_client_android.data.remote.dto.LoginRequest
-import kotlinx.coroutines.delay
+import com.grupo3.smi_mobile_client_android.data.remote.dto.UserDto
 
-// Mock temporal: aún no hay backend desplegado (ver T11 en la planificación del proyecto).
-// Cuando el servicio esté disponible, reemplazar el cuerpo de login() por la llamada real:
-// apiService.login(request).data ?: throw IllegalStateException("Respuesta vacía del servidor")
 class AuthRemoteDataSource(private val apiService: ApiService) {
 
-    suspend fun login(request: LoginRequest): ColaboradorDto {
-        delay(NETWORK_DELAY_MS)
-        require(request.dni == MOCK_DNI && request.credencial == MOCK_CREDENCIAL) {
-            ERROR_CREDENCIALES_INVALIDAS
-        }
-        return ColaboradorDto(
-            dni = request.dni,
-            nombreCompleto = MOCK_NOMBRE,
-            token = "mock-token-${request.dni}"
-        )
+    private val gson = Gson()
+
+    suspend fun login(request: LoginRequest): UserDto {
+        val response = apiService.login(request)
+        val user = response.body()?.takeIf { it.success }?.data?.user
+        if (user != null) return user
+
+        val mensaje = parseErrorMessage(response.errorBody()?.string()) ?: ERROR_GENERICO
+        throw IllegalStateException(mensaje)
+    }
+
+    // El body de error no lo convierte Retrofit/Gson automáticamente (solo aplica al body 2xx).
+    private fun parseErrorMessage(json: String?): String? {
+        if (json.isNullOrBlank()) return null
+        return runCatching { gson.fromJson(json, ApiErrorBody::class.java) }
+            .getOrNull()
+            ?.error
+            ?.message
     }
 
     private companion object {
-        const val NETWORK_DELAY_MS = 900L
-        const val MOCK_DNI = "12345678"
-        const val MOCK_CREDENCIAL = "smi2026"
-        const val MOCK_NOMBRE = "Christian Rojas"
-        const val ERROR_CREDENCIALES_INVALIDAS =
-            "Credenciales incorrectas. Verifique sus datos o contacte a TI"
+        const val ERROR_GENERICO = "No se pudo iniciar sesión"
     }
 }
