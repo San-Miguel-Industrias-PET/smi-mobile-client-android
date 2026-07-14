@@ -24,7 +24,7 @@ fun AppNavigation(appContainer: AppContainer) {
             )
         }
         composable(NavRutas.HOME) {
-            HomeScreen()
+            HomeScreen(viewModel = appContainer.homeViewModel)
         }
     }
 }

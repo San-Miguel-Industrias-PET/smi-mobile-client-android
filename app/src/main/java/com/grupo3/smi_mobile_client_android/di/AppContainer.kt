@@ -1,5 +1,6 @@
 package com.grupo3.smi_mobile_client_android.di
 
+import com.grupo3.smi_mobile_client_android.presentation.viewmodel.HomeViewModel
 import com.grupo3.smi_mobile_client_android.presentation.viewmodel.LoginViewModel
 
 class AppContainer {
@@ -9,5 +10,9 @@ class AppContainer {
 
     val loginViewModel: LoginViewModel by lazy {
         LoginViewModel(useCaseModule.authUseCases)
+    }
+
+    val homeViewModel: HomeViewModel by lazy {
+        HomeViewModel(useCaseModule.comunicadoUseCases)
     }
 }
