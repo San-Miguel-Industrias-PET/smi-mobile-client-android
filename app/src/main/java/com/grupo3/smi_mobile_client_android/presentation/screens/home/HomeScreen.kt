@@ -68,7 +68,6 @@ fun HomeScreen() {
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
             FiltroCategorias(
-                categorias = CATEGORIAS,
                 seleccionada = categoriaSeleccionada,
                 onSeleccionar = { categoriaSeleccionada = it }
             )
@@ -128,7 +127,6 @@ private fun HomeBottomNav() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun FiltroCategorias(
-    categorias: List<String>,
     seleccionada: String,
     onSeleccionar: (String) -> Unit
 ) {
@@ -138,7 +136,7 @@ private fun FiltroCategorias(
             .padding(horizontal = 16.dp, vertical = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(categorias) { categoria ->
+        items(CATEGORIAS) { categoria ->
             FilterChip(
                 selected = categoria == seleccionada,
                 onClick = { onSeleccionar(categoria) },
