@@ -15,6 +15,8 @@ import com.grupo3.smi_mobile_client_android.presentation.event.UiEvent
 @Composable
 fun AppScaffold(
     modifier: Modifier = Modifier,
+    topBar: @Composable () -> Unit = {},
+    bottomBar: @Composable () -> Unit = {},
     content: @Composable (PaddingValues) -> Unit
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
@@ -34,6 +36,8 @@ fun AppScaffold(
 
     Scaffold(
         modifier = modifier,
+        topBar = topBar,
+        bottomBar = bottomBar,
         containerColor = MaterialTheme.colorScheme.background,
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState) { data ->
