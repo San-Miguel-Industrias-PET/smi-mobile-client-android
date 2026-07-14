@@ -12,8 +12,8 @@ class ComunicadoRemoteDataSource(private val apiService: ApiService) {
     suspend fun getComunicados(categoria: String?): List<ComunicadoDto> {
         val catQuery = if (categoria == "Todos") null else categoria
         val response = apiService.getNoticias(categoria = catQuery)
-        val data = response.body()?.takeIf { it.success }?.data
-        if (data != null) return data
+        val items = response.body()?.takeIf { it.success }?.data?.items
+        if (items != null) return items
 
         val mensaje = parseErrorMessage(response.errorBody()?.string()) ?: ERROR_GENERICO
         throw IllegalStateException(mensaje)

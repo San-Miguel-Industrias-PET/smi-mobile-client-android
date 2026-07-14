@@ -1,10 +1,5 @@
 package com.grupo3.smi_mobile_client_android.presentation.screens.home
 
-<<<<<<< Updated upstream
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-=======
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,40 +31,24 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
->>>>>>> Stashed changes
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-<<<<<<< Updated upstream
-=======
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
->>>>>>> Stashed changes
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.grupo3.smi_mobile_client_android.domain.model.Comunicado
+import com.grupo3.smi_mobile_client_android.presentation.components.AppLogo
 import com.grupo3.smi_mobile_client_android.presentation.components.AppScaffold
-<<<<<<< Updated upstream
-import com.grupo3.smi_mobile_client_android.ui.theme.SmiTextSecondary
-
-// Placeholder de HU02 (muro de comunicados): por ahora solo confirma que el login redirige aquí.
-@Composable
-fun HomeScreen() {
-    AppScaffold { innerPadding ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(text = "Home", color = SmiTextSecondary)
-=======
 import com.grupo3.smi_mobile_client_android.presentation.viewmodel.HomeViewModel
 import com.grupo3.smi_mobile_client_android.ui.theme.SmiRed
 import com.grupo3.smi_mobile_client_android.ui.theme.SmiSurfaceWhite
 import com.grupo3.smi_mobile_client_android.ui.theme.SmiTextPrimary
 import com.grupo3.smi_mobile_client_android.ui.theme.SmiTextSecondary
 
-// HU04: filtrado de comunicados por categoria. Toda la logica de filtro vive aqui.
-// El topBar/bottomBar son solo el marco visual del mockup (no requieren backend).
 private val CATEGORIAS = listOf("Todos", "Seguridad", "Sostenibilidad", "Pagos", "Eventos", "Beneficios")
 
 @Composable
@@ -114,12 +93,12 @@ private fun HomeTopBar() {
     TopAppBar(
         title = { AppLogo(modifier = Modifier.height(36.dp)) },
         navigationIcon = {
-            IconButton(onClick = { /* TODO: abrir menu lateral (fuera del alcance de HU04) */ }) {
+            IconButton(onClick = { /* TODO */ }) {
                 Icon(Icons.Default.Menu, contentDescription = "Menu")
             }
         },
         actions = {
-            IconButton(onClick = { /* TODO: ir a perfil (fuera del alcance de HU04) */ }) {
+            IconButton(onClick = { /* TODO */ }) {
                 Icon(Icons.Default.AccountCircle, contentDescription = "Perfil", tint = SmiRed)
             }
         },
@@ -132,7 +111,7 @@ private fun HomeBottomNav() {
     NavigationBar(containerColor = SmiSurfaceWhite) {
         NavigationBarItem(
             selected = true,
-            onClick = { /* ya estamos en Home */ },
+            onClick = { },
             icon = { Icon(Icons.Default.Home, contentDescription = "Home") },
             label = { Text("Home") },
             colors = NavigationBarItemDefaults.colors(
@@ -143,13 +122,13 @@ private fun HomeBottomNav() {
         )
         NavigationBarItem(
             selected = false,
-            onClick = { /* TODO: pantalla de notificaciones (fuera del alcance de HU04) */ },
+            onClick = { },
             icon = { Icon(Icons.Default.Notifications, contentDescription = "Notifications") },
             label = { Text("Notifications") }
         )
         NavigationBarItem(
             selected = false,
-            onClick = { /* TODO: pantalla de perfil (fuera del alcance de HU04) */ },
+            onClick = { },
             icon = { Icon(Icons.Default.Person, contentDescription = "Profile") },
             label = { Text("Profile") }
         )
@@ -229,7 +208,6 @@ private fun ComunicadoCard(comunicado: Comunicado) {
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(top = 4.dp)
             )
->>>>>>> Stashed changes
         }
     }
 }

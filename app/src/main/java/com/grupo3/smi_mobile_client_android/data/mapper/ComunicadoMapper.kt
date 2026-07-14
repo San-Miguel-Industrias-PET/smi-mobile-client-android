@@ -8,7 +8,7 @@ object ComunicadoMapper {
         id = dto.id,
         titulo = dto.titulo,
         categoria = dto.categoria,
-        fecha = dto.fecha,
+        fecha = dto.anio.toString(),
         resumen = dto.resumen
     )
 }

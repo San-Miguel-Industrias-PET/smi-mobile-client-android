@@ -14,7 +14,7 @@ data class HomeUiState(
     val noticias: List<Comunicado> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null,
-    val categoriaSeleccionada: String = "Todos"
+    val categoriaSeleccionada: String = "Todos",
 )
 
 class HomeViewModel(
