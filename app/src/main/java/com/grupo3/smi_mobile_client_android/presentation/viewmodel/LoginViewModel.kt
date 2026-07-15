@@ -46,7 +46,8 @@ class LoginViewModel(
 
             _uiState.update { it.copy(isLoading = true) }
             try {
-                authUseCases.loginUseCase(dni, credencial)
+                val colaborador = authUseCases.loginUseCase(dni, credencial)
+                authUseCases.guardarSesionUseCase(colaborador)
                 EventBus.emit(UiEvent.Success("Login exitoso"))
                 delay(NAVIGATE_DELAY_MS)
                 _navigateToHome.emit(Unit)

@@ -10,6 +10,7 @@ import com.grupo3.smi_mobile_client_android.di.AppContainer
 import com.grupo3.smi_mobile_client_android.presentation.screens.detalle.ComunicadoDetalleScreen
 import com.grupo3.smi_mobile_client_android.presentation.screens.home.HomeScreen
 import com.grupo3.smi_mobile_client_android.presentation.screens.login.LoginScreen
+import com.grupo3.smi_mobile_client_android.presentation.screens.profile.ProfileScreen
 
 @Composable
 fun AppNavigation(appContainer: AppContainer) {
@@ -29,7 +30,8 @@ fun AppNavigation(appContainer: AppContainer) {
         composable(NavRutas.HOME) {
             HomeScreen(
                 viewModel = appContainer.homeViewModel,
-                onComunicadoClick = { id -> navController.navigate(NavRutas.detalle(id)) }
+                onComunicadoClick = { id -> navController.navigate(NavRutas.detalle(id)) },
+                onProfileClick = { navController.navigate(NavRutas.PERFIL) }
             )
         }
         composable(
@@ -40,6 +42,13 @@ fun AppNavigation(appContainer: AppContainer) {
             ComunicadoDetalleScreen(
                 viewModel = appContainer.crearComunicadoDetalleViewModel(id),
                 onVolver = { navController.popBackStack() }
+            )
+        }
+        composable(NavRutas.PERFIL) {
+            ProfileScreen(
+                viewModel = appContainer.profileViewModel,
+                onVolver = { navController.popBackStack() },
+                onHomeClick = { navController.popBackStack() }
             )
         }
     }
