@@ -1,5 +1,6 @@
 package com.grupo3.smi_mobile_client_android.presentation.screens.home
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -52,7 +53,7 @@ import com.grupo3.smi_mobile_client_android.ui.theme.SmiTextSecondary
 private val CATEGORIAS = listOf("Todos", "Seguridad", "Sostenibilidad", "Pagos", "Eventos", "Beneficios")
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel) {
+fun HomeScreen(viewModel: HomeViewModel, onComunicadoClick: (String) -> Unit) {
     val uiState by viewModel.uiState.collectAsState()
 
     AppScaffold(
@@ -81,7 +82,7 @@ fun HomeScreen(viewModel: HomeViewModel) {
                     }
                 }
             } else {
-                ListaComunicados(comunicados = uiState.noticias)
+                ListaComunicados(comunicados = uiState.noticias, onClick = onComunicadoClick)
             }
         }
     }
@@ -162,22 +163,24 @@ private fun FiltroCategorias(
 }
 
 @Composable
-private fun ListaComunicados(comunicados: List<Comunicado>) {
+private fun ListaComunicados(comunicados: List<Comunicado>, onClick: (String) -> Unit) {
     LazyColumn(
         modifier = Modifier.fillMaxWidth(),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         items(comunicados, key = { it.id }) { comunicado ->
-            ComunicadoCard(comunicado)
+            ComunicadoCard(comunicado, onClick = { onClick(comunicado.id) })
         }
     }
 }
 
 @Composable
-private fun ComunicadoCard(comunicado: Comunicado) {
+private fun ComunicadoCard(comunicado: Comunicado, onClick: () -> Unit) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
         colors = CardDefaults.cardColors(containerColor = SmiSurfaceWhite)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {

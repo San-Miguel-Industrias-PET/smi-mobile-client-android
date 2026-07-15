@@ -9,6 +9,8 @@ object ComunicadoMapper {
         titulo = dto.titulo,
         categoria = dto.categoria,
         fecha = dto.anio.toString(),
-        resumen = dto.resumen
+        resumen = dto.resumen,
+        contenido = dto.contenido ?: "",
+        autor = dto.autor ?: ""
     )
 }

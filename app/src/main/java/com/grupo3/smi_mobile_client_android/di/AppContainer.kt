@@ -1,5 +1,6 @@
 package com.grupo3.smi_mobile_client_android.di
 
+import com.grupo3.smi_mobile_client_android.presentation.viewmodel.ComunicadoDetalleViewModel
 import com.grupo3.smi_mobile_client_android.presentation.viewmodel.HomeViewModel
 import com.grupo3.smi_mobile_client_android.presentation.viewmodel.LoginViewModel
 
@@ -14,5 +15,10 @@ class AppContainer {
 
     val homeViewModel: HomeViewModel by lazy {
         HomeViewModel(useCaseModule.comunicadoUseCases)
+    }
+
+    // Factory (no singleton): cada noticia abierta necesita su propia instancia con su id.
+    fun crearComunicadoDetalleViewModel(id: String): ComunicadoDetalleViewModel {
+        return ComunicadoDetalleViewModel(useCaseModule.comunicadoUseCases, id)
     }
 }

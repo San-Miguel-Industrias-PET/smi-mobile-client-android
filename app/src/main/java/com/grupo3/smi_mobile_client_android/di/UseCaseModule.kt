@@ -2,6 +2,7 @@ package com.grupo3.smi_mobile_client_android.di
 
 import com.grupo3.smi_mobile_client_android.domain.usecase.AuthUseCases
 import com.grupo3.smi_mobile_client_android.domain.usecase.ComunicadoUseCases
+import com.grupo3.smi_mobile_client_android.domain.usecase.GetNoticiaDetalleUseCase
 import com.grupo3.smi_mobile_client_android.domain.usecase.GetNoticiasUseCase
 import com.grupo3.smi_mobile_client_android.domain.usecase.LoginUseCase
 
@@ -14,7 +15,8 @@ class UseCaseModule(private val repositoryModule: RepositoryModule) {
 
     val comunicadoUseCases: ComunicadoUseCases by lazy {
         ComunicadoUseCases(
-            getNoticiasUseCase = GetNoticiasUseCase(repositoryModule.comunicadoRepository)
+            getNoticiasUseCase = GetNoticiasUseCase(repositoryModule.comunicadoRepository),
+            getNoticiaDetalleUseCase = GetNoticiaDetalleUseCase(repositoryModule.comunicadoRepository)
         )
     }
 }
