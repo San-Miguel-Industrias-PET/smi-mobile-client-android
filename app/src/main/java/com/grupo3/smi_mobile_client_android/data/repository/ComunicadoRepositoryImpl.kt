@@ -14,4 +14,8 @@ class ComunicadoRepositoryImpl(
             ComunicadoMapper.toDomain(it)
         }
     }
+
+    override suspend fun getComunicadoPorId(id: String): Comunicado {
+        return ComunicadoMapper.toDomain(remoteDataSource.getComunicadoPorId(id))
+    }
 }

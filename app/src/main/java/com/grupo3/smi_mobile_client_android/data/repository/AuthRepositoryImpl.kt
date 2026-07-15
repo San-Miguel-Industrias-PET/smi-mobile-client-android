@@ -10,8 +10,16 @@ class AuthRepositoryImpl(
     private val remoteDataSource: AuthRemoteDataSource
 ) : AuthRepository {
 
+    private var colaboradorActual: Colaborador? = null
+
     override suspend fun login(dni: String, credencial: String): Colaborador {
         val dto = remoteDataSource.login(LoginRequest(dni = dni, password = credencial))
         return ColaboradorMapper.toDomain(dto)
+    }
+
+    override fun getColaboradorActual(): Colaborador? = colaboradorActual
+
+    override fun guardarColaborador(colaborador: Colaborador) {
+        colaboradorActual = colaborador
     }
 }

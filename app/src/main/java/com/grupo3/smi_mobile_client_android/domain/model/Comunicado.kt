@@ -5,5 +5,7 @@ data class Comunicado(
     val titulo: String,
     val categoria: String,
     val fecha: String,
-    val resumen: String
+    val resumen: String,
+    val contenido: String = "",
+    val autor: String = ""
 )

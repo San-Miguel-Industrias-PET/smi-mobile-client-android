@@ -1,5 +1,6 @@
 package com.grupo3.smi_mobile_client_android.presentation.screens.home
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,10 +15,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -28,9 +26,6 @@ import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -41,8 +36,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.grupo3.smi_mobile_client_android.domain.model.Comunicado
+import com.grupo3.smi_mobile_client_android.presentation.components.AppBottomNav
 import com.grupo3.smi_mobile_client_android.presentation.components.AppLogo
 import com.grupo3.smi_mobile_client_android.presentation.components.AppScaffold
+import com.grupo3.smi_mobile_client_android.presentation.components.BottomNavItem
 import com.grupo3.smi_mobile_client_android.presentation.viewmodel.HomeViewModel
 import com.grupo3.smi_mobile_client_android.ui.theme.SmiRed
 import com.grupo3.smi_mobile_client_android.ui.theme.SmiSurfaceWhite
@@ -52,12 +49,22 @@ import com.grupo3.smi_mobile_client_android.ui.theme.SmiTextSecondary
 private val CATEGORIAS = listOf("Todos", "Seguridad", "Sostenibilidad", "Pagos", "Eventos", "Beneficios")
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel) {
+fun HomeScreen(
+    viewModel: HomeViewModel,
+    onComunicadoClick: (String) -> Unit,
+    onProfileClick: () -> Unit
+) {
     val uiState by viewModel.uiState.collectAsState()
 
     AppScaffold(
-        topBar = { HomeTopBar() },
-        bottomBar = { HomeBottomNav() }
+        topBar = { HomeTopBar(onProfileClick = onProfileClick) },
+        bottomBar = {
+            AppBottomNav(
+                seleccionado = BottomNavItem.HOME,
+                onHomeClick = { },
+                onProfileClick = onProfileClick
+            )
+        }
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
             FiltroCategorias(
@@ -81,7 +88,7 @@ fun HomeScreen(viewModel: HomeViewModel) {
                     }
                 }
             } else {
-                ListaComunicados(comunicados = uiState.noticias)
+                ListaComunicados(comunicados = uiState.noticias, onClick = onComunicadoClick)
             }
         }
     }
@@ -89,7 +96,7 @@ fun HomeScreen(viewModel: HomeViewModel) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun HomeTopBar() {
+private fun HomeTopBar(onProfileClick: () -> Unit) {
     TopAppBar(
         title = { AppLogo(modifier = Modifier.height(36.dp)) },
         navigationIcon = {
@@ -98,41 +105,12 @@ private fun HomeTopBar() {
             }
         },
         actions = {
-            IconButton(onClick = { /* TODO */ }) {
+            IconButton(onClick = onProfileClick) {
                 Icon(Icons.Default.AccountCircle, contentDescription = "Perfil", tint = SmiRed)
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(containerColor = SmiSurfaceWhite)
     )
-}
-
-@Composable
-private fun HomeBottomNav() {
-    NavigationBar(containerColor = SmiSurfaceWhite) {
-        NavigationBarItem(
-            selected = true,
-            onClick = { },
-            icon = { Icon(Icons.Default.Home, contentDescription = "Home") },
-            label = { Text("Home") },
-            colors = NavigationBarItemDefaults.colors(
-                selectedIconColor = SmiSurfaceWhite,
-                indicatorColor = SmiRed,
-                selectedTextColor = SmiRed
-            )
-        )
-        NavigationBarItem(
-            selected = false,
-            onClick = { },
-            icon = { Icon(Icons.Default.Notifications, contentDescription = "Notifications") },
-            label = { Text("Notifications") }
-        )
-        NavigationBarItem(
-            selected = false,
-            onClick = { },
-            icon = { Icon(Icons.Default.Person, contentDescription = "Profile") },
-            label = { Text("Profile") }
-        )
-    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -162,22 +140,24 @@ private fun FiltroCategorias(
 }
 
 @Composable
-private fun ListaComunicados(comunicados: List<Comunicado>) {
+private fun ListaComunicados(comunicados: List<Comunicado>, onClick: (String) -> Unit) {
     LazyColumn(
         modifier = Modifier.fillMaxWidth(),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         items(comunicados, key = { it.id }) { comunicado ->
-            ComunicadoCard(comunicado)
+            ComunicadoCard(comunicado, onClick = { onClick(comunicado.id) })
         }
     }
 }
 
 @Composable
-private fun ComunicadoCard(comunicado: Comunicado) {
+private fun ComunicadoCard(comunicado: Comunicado, onClick: () -> Unit) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
         colors = CardDefaults.cardColors(containerColor = SmiSurfaceWhite)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {

@@ -19,6 +19,15 @@ class ComunicadoRemoteDataSource(private val apiService: ApiService) {
         throw IllegalStateException(mensaje)
     }
 
+    suspend fun getComunicadoPorId(id: String): ComunicadoDto {
+        val response = apiService.getNoticiaPorId(id)
+        val data = response.body()?.takeIf { it.success }?.data
+        if (data != null) return data
+
+        val mensaje = parseErrorMessage(response.errorBody()?.string()) ?: ERROR_DETALLE
+        throw IllegalStateException(mensaje)
+    }
+
     private fun parseErrorMessage(json: String?): String? {
         if (json.isNullOrBlank()) return null
         return runCatching { gson.fromJson(json, ApiErrorBody::class.java) }
@@ -29,5 +38,6 @@ class ComunicadoRemoteDataSource(private val apiService: ApiService) {
 
     private companion object {
         const val ERROR_GENERICO = "Error al obtener noticias"
+        const val ERROR_DETALLE = "Error al obtener el detalle de la noticia"
     }
 }
